@@ -24,7 +24,7 @@ class Diversity(Strategy):
     return dist_mat
   
   def knei_dist(self,interd,fetch):
-    num_nei = round(interd.shape[0]/fetch)
+    num_nei = 7 # round(interd.shape[0]/fetch)
     knei_dist = []
     for i in range(interd.shape[0]):
       temp_dist = torch.sort(interd[i][:]).values
