@@ -49,7 +49,7 @@ class Diversity(Strategy):
   def select(self, fetchsize):
     embedding_unlabeled = self.get_embedding(self.unlabeled_dataset)
     
-    bs = 10000
+    bs = 5000
     idx = []
     nb = round(embedding_unlabeled.shape[0]/bs)
     for b in range(nb):
