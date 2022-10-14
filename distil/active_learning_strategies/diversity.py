@@ -12,7 +12,7 @@ import numpy as np
 from torch.utils.data import dataset, Subset
 from .strategy import Strategy
 from .margin_sampling import MarginSampling
-from .test_utils import MyLabeledDataset, MyUnlabeledDataset
+# from .test_utils import MyLabeledDataset, MyUnlabeledDataset
 class Diversity(Strategy):
   def __init__(self, labeled_dataset, unlabeled_dataset, net, nclass, args={}):
 
