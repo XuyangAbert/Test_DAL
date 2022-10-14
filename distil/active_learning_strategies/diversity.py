@@ -12,6 +12,7 @@ import numpy as np
 from torch.utils.data import dataset, Subset
 from .strategy import Strategy
 from .margin_sampling import MarginSampling
+from .test_utils import MyLabeledDataset, MyUnlabeledDataset
 class Diversity(Strategy):
   def __init__(self, labeled_dataset, unlabeled_dataset, net, nclass, args={}):
 
@@ -26,7 +27,7 @@ class Diversity(Strategy):
     return dist_mat
   
   def knei_dist(self,interd,fetch):
-    num_nei = 7 # round(interd.shape[0]/fetch)
+    num_nei = 5
     knei_dist = []
     for i in range(interd.shape[0]):
       temp_dist = torch.sort(interd[i][:]).values
@@ -38,29 +39,31 @@ class Diversity(Strategy):
     priority = []
     beta = torch.mean(interd)
     for i in range(interd.shape[0]):
-      priority.append(torch.sum(torch.exp(interd[i][:])))
+      priority.append(torch.sum(torch.exp(interd[i][:]/beta)))
     return torch.tensor(priority)
   
   def acquire_scores2(self,unlabeled_batch):
     
-    scores = self.strategy.acquire_scores(unlabeled_batch)
-    return scores
+    scores = -self.strategy.acquire_scores(unlabeled_batch)
+    return torch.tensor(scores)
 
   def select(self, fetchsize):
     embedding_unlabeled = self.get_embedding(self.unlabeled_dataset)
-    
-    bs = 5000
+    # priority1 = self.acquire_scores2(self.unlabeled_dataset)
+    bs = 10000
     idx = []
     nb = round(embedding_unlabeled.shape[0]/bs)
     for b in range(nb):
       embedding_unlabeled_batch = embedding_unlabeled[b*bs:(b+1)*bs][:]
-      buffered_stream = Subset(self.unlabeled_dataset,list(range(bs)))
+      buffered_stream = Subset(self.unlabeled_dataset,list(range(b*bs,min(len(self.unlabeled_dataset),b*bs+bs))))
+      # buffered_stream = self.unlabeled_dataset[b*bs:(b+1)*bs]
       interd = self.dist_cal(embedding_unlabeled_batch)
       dth = self.knei_dist(interd, round(fetchsize/nb))
       # print(dth)
       # priority = self.acquire_scores(interd)
       priority = self.acquire_scores2(buffered_stream)
-      # print(len(priority))
+      # priority = priority1[b*bs:(b+1)*bs]
+      # print(priority)
       for i in range(round(fetchsize/nb)):
         top_idx = torch.argmax(priority).item()
         idx.append(top_idx)
