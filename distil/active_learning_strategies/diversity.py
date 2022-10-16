@@ -32,7 +32,7 @@ class Diversity(Strategy):
     for i in range(interd.shape[0]):
       temp_dist = torch.sort(interd[i][:]).values
       knei_dist.append(torch.sum(temp_dist[:num_nei])/num_nei)
-    dth = 0.1*torch.sum(torch.tensor(knei_dist)) / len(knei_dist)
+    dth = 0.3*torch.sum(torch.tensor(knei_dist)) / len(knei_dist)
     return dth
     
   def acquire_scores(self, interd):
@@ -70,7 +70,7 @@ class Diversity(Strategy):
         neighbordist = interd[top_idx][:]
         neighboridx = torch.where(neighbordist <= dth)[0]
         # len(neighboridx)
-        priority[top_idx] = priority[top_idx] / (200 + 200*torch.sum(priority[neighboridx]))  
-        priority[neighboridx] = priority[neighboridx] / (200 + 200*torch.sum(priority[neighboridx]))
-    # print('Number of quried samples: ',len(torch.unique(torch.tensor(idx))))
+        priority[top_idx] = priority[top_idx] / (torch.sum(priority[neighboridx]))  
+        priority[neighboridx] = priority[neighboridx] / (torch.sum(priority[neighboridx]))
+    print('Number of quried samples: ',len(torch.unique(torch.tensor(idx))))
     return torch.tensor(idx)
