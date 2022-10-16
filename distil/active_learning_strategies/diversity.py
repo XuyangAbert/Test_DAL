@@ -31,8 +31,8 @@ class Diversity(Strategy):
     knei_dist = []
     for i in range(interd.shape[0]):
       temp_dist = torch.sort(interd[i][:]).values
-      knei_dist.append(torch.mean(temp_dist[:num_nei]))
-    dth = torch.mean(torch.tensor(knei_dist)) 
+      knei_dist.append(torch.sum(temp_dist[:num_nei])/num_nei)
+    dth = 0.1*torch.sum(torch.tensor(knei_dist)) / len(knei_dist)
     return dth
     
   def acquire_scores(self, interd):
@@ -44,8 +44,8 @@ class Diversity(Strategy):
   
   def acquire_scores2(self,unlabeled_batch):
     
-    scores = -self.strategy.acquire_scores(unlabeled_batch)
-    return torch.tensor(scores)
+    scores = torch.abs(self.strategy.acquire_scores(unlabeled_batch))
+    return scores
 
   def select(self, fetchsize):
     embedding_unlabeled = self.get_embedding(self.unlabeled_dataset)
@@ -65,7 +65,7 @@ class Diversity(Strategy):
       # priority = priority1[b*bs:(b+1)*bs]
       # print(priority)
       for i in range(round(fetchsize/nb)):
-        top_idx = torch.argmax(priority).item()
+        top_idx = torch.argmax(priority)
         idx.append(top_idx)
         neighbordist = interd[top_idx][:]
         neighboridx = torch.where(neighbordist <= dth)[0]
