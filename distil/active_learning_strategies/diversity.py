@@ -27,12 +27,13 @@ class Diversity(Strategy):
     return dist_mat
   
   def knei_dist(self,interd,fetch):
-    num_nei = 5
+    num_nei = 3
     knei_dist = []
     for i in range(interd.shape[0]):
       temp_dist = torch.sort(interd[i][:]).values
-      knei_dist.append(torch.sum(temp_dist[:num_nei])/num_nei)
-    dth = 0.3*torch.sum(torch.tensor(knei_dist)) / len(knei_dist)
+      knei_dist.append(torch.min(temp_dist[1::num_nei+1]))
+    dth = 0.1*torch.mean(torch.tensor(knei_dist))
+    # dth = 0.01*torch.sum(torch.tensor(knei_dist)) / len(knei_dist)
     return dth
     
   def acquire_scores(self, interd):
@@ -43,9 +44,8 @@ class Diversity(Strategy):
     return torch.tensor(priority)
   
   def acquire_scores2(self,unlabeled_batch):
-    
-    scores = torch.exp(self.strategy.acquire_scores(unlabeled_batch))
-    return scores
+    scores = -self.strategy.acquire_scores(unlabeled_batch)
+    return scores * 1000000
 
   def select(self, fetchsize):
     embedding_unlabeled = self.get_embedding(self.unlabeled_dataset)
@@ -70,7 +70,7 @@ class Diversity(Strategy):
         neighbordist = interd[top_idx][:]
         neighboridx = torch.where(neighbordist <= dth)[0]
         # len(neighboridx)
-        priority[top_idx] = priority[top_idx] / (torch.sum(priority[neighboridx]))  
-        priority[neighboridx] = priority[neighboridx] / (torch.sum(priority[neighboridx]))
-    print('Number of quried samples: ',len(torch.unique(torch.tensor(idx))))
+        # priority[top_idx] = priority[top_idx] / (20000000*torch.sum(priority[neighboridx]))  
+        priority[neighboridx] = priority[neighboridx] / (20000000+20000000*torch.sum(priority[neighboridx]))
+      print('Number of quried samples: ',len(torch.unique(torch.tensor(idx))))
     return torch.tensor(idx)
