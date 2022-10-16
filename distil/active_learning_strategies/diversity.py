@@ -73,4 +73,5 @@ class Diversity(Strategy):
         # priority[top_idx] = priority[top_idx] / (20000000*torch.sum(priority[neighboridx]))  
         priority[neighboridx] = priority[neighboridx] / (20000000+20000000*torch.sum(priority[neighboridx]))
       print('Number of quried samples: ',len(torch.unique(torch.tensor(idx))))
+#     if len(torch.unique(torch.tensor(idx))) < fetchsize:
     return torch.tensor(idx)
