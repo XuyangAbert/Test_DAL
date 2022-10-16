@@ -44,7 +44,7 @@ class Diversity(Strategy):
   
   def acquire_scores2(self,unlabeled_batch):
     
-    scores = torch.abs(self.strategy.acquire_scores(unlabeled_batch))
+    scores = torch.exp(self.strategy.acquire_scores(unlabeled_batch))
     return scores
 
   def select(self, fetchsize):
@@ -65,7 +65,7 @@ class Diversity(Strategy):
       # priority = priority1[b*bs:(b+1)*bs]
       # print(priority)
       for i in range(round(fetchsize/nb)):
-        top_idx = torch.argmax(priority)
+        top_idx = torch.argmax(priority).item()
         idx.append(top_idx)
         neighbordist = interd[top_idx][:]
         neighboridx = torch.where(neighbordist <= dth)[0]
@@ -73,4 +73,4 @@ class Diversity(Strategy):
         priority[top_idx] = priority[top_idx] / (200 + 200*torch.sum(priority[neighboridx]))  
         priority[neighboridx] = priority[neighboridx] / (200 + 200*torch.sum(priority[neighboridx]))
     # print('Number of quried samples: ',len(torch.unique(torch.tensor(idx))))
-    return idx
+    return torch.tensor(idx)
