@@ -53,7 +53,7 @@ class Diversity(Strategy):
     bs = 10000
     idx = []
     nb = round(embedding_unlabeled.shape[0]/bs)
-    sample_idx = list(range(fetchsize))
+#     sample_idx = list(range(fetchsize))
     for b in range(nb):
       embedding_unlabeled_batch = embedding_unlabeled[b*bs:(b+1)*bs][:]
       buffered_stream = Subset(self.unlabeled_dataset,list(range(b*bs,min(len(self.unlabeled_dataset),b*bs+bs))))
@@ -68,7 +68,7 @@ class Diversity(Strategy):
       for i in range(round(fetchsize/nb)):
         top_idx = torch.argmax(priority).item()
         idx.append(top_idx+b*bs)
-        sample_idx.pop(top_idx)
+#         sample_idx.pop(top_idx)
         neighbordist = interd[top_idx][:]
         neighboridx = torch.where(neighbordist <= dth)[0]
         # len(neighboridx)
