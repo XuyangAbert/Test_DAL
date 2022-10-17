@@ -67,7 +67,7 @@ class Diversity(Strategy):
       # print(priority)
       for i in range(round(fetchsize/nb)):
         top_idx = torch.argmax(priority).item()
-        idx.append(top_idx)
+        idx.append(top_idx+b*bs)
         sample_idx.pop(top_idx)
         neighbordist = interd[top_idx][:]
         neighboridx = torch.where(neighbordist <= dth)[0]
@@ -75,9 +75,9 @@ class Diversity(Strategy):
         # priority[top_idx] = priority[top_idx] / (20000000*torch.sum(priority[neighboridx]))  
         priority[neighboridx] = priority[neighboridx] / (20000000+20000000*torch.sum(priority[neighboridx]))
       print('Number of quried samples: ',len(torch.unique(torch.tensor(idx))))
-    if len(torch.unique(torch.tensor(idx))) < fetchsize:
-      off_set = fetchsize - len(torch.unique(torch.tensor(idx)))
-      remain_idx = sample_idx[:off_set]
-      idx = idx + sample_idx[remain_idx]
-    print('Number of quried samples: ',len(torch.unique(torch.tensor(idx))))
+#     if len(torch.unique(torch.tensor(idx))) < fetchsize:
+#       off_set = fetchsize - len(torch.unique(torch.tensor(idx)))
+#       remain_idx = sample_idx[:off_set]
+#       idx = idx + sample_idx[remain_idx]
+    print('Total Number of quried samples: ',len(torch.unique(torch.tensor(idx))))
     return torch.tensor(idx)
