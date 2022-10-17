@@ -53,7 +53,7 @@ class Diversity(Strategy):
     bs = 10000
     idx = []
     nb = round(embedding_unlabeled.shape[0]/bs)
-    sample_idx = range(fetchsize)
+    sample_idx = list(range(fetchsize))
     for b in range(nb):
       embedding_unlabeled_batch = embedding_unlabeled[b*bs:(b+1)*bs][:]
       buffered_stream = Subset(self.unlabeled_dataset,list(range(b*bs,min(len(self.unlabeled_dataset),b*bs+bs))))
