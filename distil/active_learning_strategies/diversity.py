@@ -31,7 +31,7 @@ class Diversity(Strategy):
     knei_dist = []
     for i in range(interd.shape[0]):
       temp_dist = torch.sort(interd[i][:]).values
-      knei_dist.append(torch.min(temp_dist[1::num_nei+1]))
+      knei_dist.append(torch.mean(temp_dist[1::num_nei+1]))
     # dth = 0.1*torch.mean(torch.tensor(knei_dist))
     dth = 0.01*torch.sum(torch.tensor(knei_dist)) / len(knei_dist)
     return dth
