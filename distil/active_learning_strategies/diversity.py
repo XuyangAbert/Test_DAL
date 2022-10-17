@@ -45,7 +45,7 @@ class Diversity(Strategy):
   
   def acquire_scores2(self,unlabeled_batch):
     scores = -self.strategy.acquire_scores(unlabeled_batch)
-    return scores * 100000
+    return scores * 1000
 
   def select(self, fetchsize):
     embedding_unlabeled = self.get_embedding(self.unlabeled_dataset)
