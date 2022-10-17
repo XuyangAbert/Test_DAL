@@ -31,7 +31,7 @@ class Diversity(Strategy):
     knei_dist = []
     for i in range(interd.shape[0]):
       temp_dist = torch.sort(interd[i][:]).values
-      knei_dist.append(torch.min(temp_dist[0::num_nei]))
+      knei_dist.append(torch.mean(temp_dist[0::num_nei+1]))
     # dth = 0.1*torch.mean(torch.tensor(knei_dist))
     dth = 0.01*torch.sum(torch.tensor(knei_dist)) / len(knei_dist)
     return dth
@@ -44,16 +44,18 @@ class Diversity(Strategy):
     return torch.tensor(priority)
   
   def acquire_scores2(self,unlabeled_batch):
-    scores = -self.strategy.acquire_scores(unlabeled_batch)
-    return scores * 1000000
+    scores = self.strategy.acquire_scores(unlabeled_batch)
+    # return torch.tensor(scores)*1000000
+    return scores
 
   def select(self, fetchsize):
     embedding_unlabeled = self.get_embedding(self.unlabeled_dataset)
+    # print(embedding_unlabeled.shape)
     # priority1 = self.acquire_scores2(self.unlabeled_dataset)
     bs = 10000
     idx = []
     nb = round(embedding_unlabeled.shape[0]/bs)
-#     sample_idx = list(range(fetchsize))
+    sample_idx = list(range(fetchsize))
     for b in range(nb):
       if b == nb - 1:
         upper = min(len(self.unlabeled_dataset),b*bs+bs)
@@ -61,24 +63,22 @@ class Diversity(Strategy):
         upper = (b+1)*bs
       embedding_unlabeled_batch = embedding_unlabeled[b*bs:upper][:]
       buffered_stream = Subset(self.unlabeled_dataset,list(range(b*bs,upper)))
-      # buffered_stream = self.unlabeled_dataset[b*bs:(b+1)*bs]
       interd = self.dist_cal(embedding_unlabeled_batch)
       dth = self.knei_dist(interd, round(fetchsize/nb))
+      # print(interd)
       # print(dth)
       # priority = self.acquire_scores(interd)
       priority = self.acquire_scores2(buffered_stream)
-      # priority = priority1[b*bs:(b+1)*bs]
       # print(priority)
       for i in range(round(fetchsize/nb)):
         top_idx = torch.argmax(priority).item()
         idx.append(top_idx+b*bs)
         neighbordist = interd[top_idx][:]
-        neighboridx = torch.where(neighbordist < dth)[0]
-        priority[neighboridx] = priority[neighboridx] / (20000000+2000000000*torch.sum(priority[neighboridx]))
-#       print('Number of quried samples: ',len(torch.unique(torch.tensor(idx))))
-#     if len(torch.unique(torch.tensor(idx))) < fetchsize:
-#       off_set = fetchsize - len(torch.unique(torch.tensor(idx)))
-#       remain_idx = sample_idx[:off_set]
-#       idx = idx + sample_idx[remain_idx]
+        neighboridx = torch.where(neighbordist <= dth)[0]
+        # priority[top_idx] *= 2000000000
+        priority[neighboridx] *= 200000000000
+        # priority[top_idx] /= (20000000+2000000000*sum(priority[neighboridx]))
+        # priority[neighboridx] = priority[neighboridx] / (20000000+2000000000*torch.sum(priority[neighboridx]))
+      # print('Number of quried samples: ',len(torch.unique(torch.tensor(idx))))
     print('Total Number of quried samples: ',len(torch.unique(torch.tensor(idx))))
-    return torch.tensor(idx)
+    return idx
