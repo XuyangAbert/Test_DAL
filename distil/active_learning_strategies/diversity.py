@@ -55,8 +55,12 @@ class Diversity(Strategy):
     nb = round(embedding_unlabeled.shape[0]/bs)
 #     sample_idx = list(range(fetchsize))
     for b in range(nb):
-      embedding_unlabeled_batch = embedding_unlabeled[b*bs:(b+1)*bs][:]
-      buffered_stream = Subset(self.unlabeled_dataset,list(range(b*bs,min(len(self.unlabeled_dataset),b*bs+bs))))
+      if b == nb - 1:
+        upper = min(len(self.unlabeled_dataset),b*bs+bs)
+      else:
+        upper = (b+1)*bs
+      embedding_unlabeled_batch = embedding_unlabeled[b*bs:upper][:]
+      buffered_stream = Subset(self.unlabeled_dataset,list(range(b*bs,upper)))
       # buffered_stream = self.unlabeled_dataset[b*bs:(b+1)*bs]
       interd = self.dist_cal(embedding_unlabeled_batch)
       dth = self.knei_dist(interd, round(fetchsize/nb))
@@ -68,13 +72,10 @@ class Diversity(Strategy):
       for i in range(round(fetchsize/nb)):
         top_idx = torch.argmax(priority).item()
         idx.append(top_idx+b*bs)
-#         sample_idx.pop(top_idx)
         neighbordist = interd[top_idx][:]
-        neighboridx = torch.where(neighbordist <= dth)[0]
-        # len(neighboridx)
-        # priority[top_idx] = priority[top_idx] / (20000000*torch.sum(priority[neighboridx]))  
+        neighboridx = torch.where(neighbordist < dth)[0]
         priority[neighboridx] = priority[neighboridx] / (20000000+2000000000*torch.sum(priority[neighboridx]))
-      print('Number of quried samples: ',len(torch.unique(torch.tensor(idx))))
+#       print('Number of quried samples: ',len(torch.unique(torch.tensor(idx))))
 #     if len(torch.unique(torch.tensor(idx))) < fetchsize:
 #       off_set = fetchsize - len(torch.unique(torch.tensor(idx)))
 #       remain_idx = sample_idx[:off_set]
