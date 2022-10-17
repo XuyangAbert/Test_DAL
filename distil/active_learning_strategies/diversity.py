@@ -77,7 +77,7 @@ class Diversity(Strategy):
       print('Number of quried samples: ',len(torch.unique(torch.tensor(idx))))
     if len(torch.unique(torch.tensor(idx))) < fetchsize:
       off_set = fetchsize - len(torch.unique(torch.tensor(idx)))
-      remain_idx = torch.randint(0,len(sample_idx),off_set)
-      idx.append(sample_idx[remain_idx])
+      remain_idx = sample_idx[:off_set]
+      idx = idx + sample_idx[remain_idx]
     print('Number of quried samples: ',len(torch.unique(torch.tensor(idx))))
     return torch.tensor(idx)
