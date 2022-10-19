@@ -40,7 +40,7 @@ class Diversity(Strategy):
     priority = []
     beta = torch.mean(interd)
     for i in range(interd.shape[0]):
-      priority.append(torch.sum(torch.exp(interd[i][:]/beta)))
+      priority.append(torch.sum(torch.exp(-interd[i][:]/beta)))
     return torch.tensor(priority)
   
   def acquire_scores2(self,unlabeled_batch):
