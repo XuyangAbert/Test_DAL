@@ -32,29 +32,7 @@ Some of the algorithms currently implemented in DISTIL include the following:
 
 To learn more on different active learning algorithms, check out the [Active Learning Strategies Survey Blog](https://decile-research.medium.com/active-learning-strategies-distil-62ee9fc166f9)
 
-## Documentation
-Learn more about DISTIL by reading our [documentation](https://decile-team-distil.readthedocs.io/en/latest/).
-
-## Mailing List
-To receive updates about DISTIL and to be a part of the community, join the Decile_DISTIL_Dev group.
-```
-https://groups.google.com/forum/#!forum/Decile_DISTIL_Dev/join 
-```
-## Acknowledgment
-This library takes inspiration, builds upon, and uses pieces of code from several open source codebases. These include [Kuan-Hao Huang's deep active learning repository](https://github.com/ej0cl6/deep-active-learning), [Jordan Ash's Badge repository](https://github.com/JordanAsh/badge), and [Andreas Kirsch's and Joost van Amersfoort's BatchBALD repository](https://github.com/BlackHC/batchbald_redux). Also, DISTIL uses [submodlib](https://github.com/decile-team/submodlib) for submodular optimization.
-
-## Team
-DISTIL is created and maintained by Nathan Beck, [Suraj Kothawade](https://personal.utdallas.edu/~snk170001/), [Durga Sivasubramanian](https://www.linkedin.com/in/durga-s-352831105), [Apurva Dani](https://apurvadani.github.io/index.html), [Rishabh Iyer](https://www.rishiyer.com), and [Ganesh Ramakrishnan](https://www.cse.iitb.ac.in/~ganesh/). We look forward to have DISTIL more community driven. Please use it and contribute to it for your active learning research, and feel free to use it for your commercial projects. We will add the major contributors here.
-
-## Resources
-Youtube Tutorials on DISTIL:
-- [Tutorial on Active Learning](https://www.youtube.com/watch?v=tBhjq1gUAv4&list=PLIQ2KoP-CQ5HU4hjT2S-HNewam8sEW-9c&index=2)
-- [Tutorial and Setup of DISTIL](https://www.youtube.com/watch?v=nnNvMBUJdwc&list=PLIQ2KoP-CQ5HU4hjT2S-HNewam8sEW-9c&index=3)
-- [Benchmarking Active Learning through DISTIL](https://www.youtube.com/watch?v=OGgGqk3seaw&list=PLIQ2KoP-CQ5HU4hjT2S-HNewam8sEW-9c&index=4)
-
-[Blog Articles](https://decile-research.medium.com/)
-
-## Publications
+## References
 
 [1] Settles, Burr. Active learning literature survey. University of Wisconsin-Madison Department of Computer Sciences, 2009.
 
