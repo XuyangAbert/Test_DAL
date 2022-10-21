@@ -1,4 +1,4 @@
-Extensions of DISTILL
+## This project utilizes the DISTILL as the benchmark platform for experimental evaulation.
 <p align="center">
     <br>
         &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
