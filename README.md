@@ -1,40 +1,4 @@
 ## This project utilizes the DISTILL as the benchmark platform for experimental evaulation.
-<p align="center">
-    <br>
-        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <img src="https://github.com/decile-team/distil/blob/main/experiment_plots/distil_logo.svg" width="500" height="150"/>
-    </br>
-</p>
-
-<p align="center">
-    <a href="https://github.com/decile-team/distil/blob/main/LICENSE">
-        <img alt="GitHub" src="https://img.shields.io/github/license/decile-team/distil?color=blue">
-    </a>
-    <a href="https://decile.org/">
-        <img alt="Decile" src="https://img.shields.io/badge/website-online-green">
-    </a>  
-    <a href="https://decile-team-distil.readthedocs.io/en/latest/index.html">
-        <img alt="Documentation" src="https://img.shields.io/badge/docs-passing-brightgreen">
-    </a>
-    <a href="#">
-        <img alt="GitHub Stars" src="https://img.shields.io/github/stars/decile-team/distil">
-    </a>
-    <a href="#">
-        <img alt="GitHub Forks" src="https://img.shields.io/github/forks/decile-team/distil">
-    </a>
-</p>
-
-<h3 align="center">
-<p>Cut down your labeling cost and time by 3x-5x!
-</h3>
-
-## What is DISTIL?
-<p align="center">
-    <br>
-        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <img src="https://github.com/decile-team/distil/blob/main/experiment_plots/distil_explanation.png" width="543" height="390"/>
-    </br>
-</p>
 
 DISTIL is an active learning toolkit that implements a number of state-of-the-art active learning strategies with a particular focus for active learning in the deep learning setting. DISTIL is built on *PyTorch* and decouples the training loop from the active learning algorithm, thereby providing flexibility to the user by allowing them to control the training procedure and model. It allows users to incorporate new active learning algorithms easily with minimal changes to their existing code. DISTIL also provides support for incorporating active learning with your custom dataset and allows you to experiment on well-known datasets. We are continuously incorporating newer and better active learning selection strategies into DISTIL, and we plan to expand the scope of the supported active learning algorithms to settings beyond the currently supported supervised classification setting.
 
