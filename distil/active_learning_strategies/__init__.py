@@ -21,3 +21,4 @@ from .scmi import SCMI
 from .smi import SMI
 from .submod_sampling import SubmodularSampling
 from .diversity import Diversity
+from .diversity_density import Diversity_Density
