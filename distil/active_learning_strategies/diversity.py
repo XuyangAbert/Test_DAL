@@ -12,11 +12,13 @@ import numpy as np
 from torch.utils.data import dataset, Subset
 from .strategy import Strategy
 from .margin_sampling import MarginSampling
+from .entropy_sampling import EntropySampling
 # from .test_utils import MyLabeledDataset, MyUnlabeledDataset
 class Diversity(Strategy):
   def __init__(self, labeled_dataset, unlabeled_dataset, net, nclass, args={}):
-
-    self.strategy = MarginSampling(labeled_dataset,unlabeled_dataset,net,nclass, args)
+    
+    self.strategy = EntropySampling(labeled_dataset,unlabeled_dataset,net,nclass, args)
+    # self.strategy = MarginSampling(labeled_dataset,unlabeled_dataset,net,nclass, args)
     super(Diversity,self).__init__(labeled_dataset, unlabeled_dataset, net, nclass, args)
 
   def dist_cal(self,unlabeled_embeddings):
